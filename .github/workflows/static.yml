@@ -1,0 +1,132 @@
+#import React from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import { WebView } from 'react-native-webview';
+
+export default function App() {
+  return (
+    <SafeAreaView style={styles.flex}>
+      <WebView source={{ uri: 'https://movion-omega-market-sentinel.github.io/demo-repository/' }} style={styles.flex} />
+    </SafeAreaView>
+  );
+}
+const styles = StyleSheet.create({ flex: { flex: 1 } });
+
+Replace the URL with your deployed web app URL (or use GitHub Pages if you have it set up).
+
+Build steps:
+
+Copy
+
+Install Node.js and React Native CLI.
+
+npx react-native init MyMobileApp
+
+cd MyMobileApp
+
+npm install react-native-webview
+
+Replace App.js with the code above.
+
+Run with npx react-native run-android or run-ios.
+
+**B. Android Native Example**
+
+MainActivity.java
+
+WebView myWebView = (WebView) findViewById(R.id.webview);
+myWebView.getSettings().setJavaScriptEnabled(true);
+myWebView.loadUrl("https://movion-omega-market-sentinel.github.io/demo-repository/");
+
+See Android WebView docs:
+https://developer.android.com/reference/android/webkit/WebView
+
+**C. iOS Native Example (Swift)**
+
+import WebKit
+class ViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let webView = WKWebView(frame: self.view.frame)
+        self.view.addSubview(webView)
+        let url = URL(string: "https://movion-omega-market-sentinel.github.io/demo-repository/")!
+        webView.load(URLRequest(url: url))
+    }
+}
+
+See Apple WebView docs:
+https://developer.apple.com/documentation/webkit/wkwebview
+
+2. **Progressive Web App (PWA)**
+
+You can turn your web app into a PWA, so mobile users can "install" it to their home screen and launch it like an app.
+
+PWA guide:
+https://web.dev/explore/progressive-web-apps
+
+3. **No-Code/Low-Code Wrappers**
+
+Use services like GoNative.io:
+https://gonative.io/
+WebViewGold:
+https://www.webviewgold.com/
+or Thunkable:
+https://thunkable.com/
+to convert your URL to a mobile app without coding.
+
+4. **Next Steps**
+
+Let me know: 
+
+Do you want iOS, Android, or both?
+
+Do you want a simple web wrapper or a full-featured native app?
+
+Is your web app already deployed and responsive for mobile?
+
+Would you like detailed step-by-step instructions for one of the options above?
+
+Let me know your preferred approach, and I’ll guide you through the exact steps!
+
+ Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
